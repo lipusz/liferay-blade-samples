@@ -31,7 +31,6 @@ import org.osgi.service.component.annotations.Component;
  * @author Tibor Lipusz
  */
 @Component(
-	configurationPid = "com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration",
 	immediate = true, service = IndexSettingsContributor.class
 )
 public class TrainingIndexSettingsContributor
