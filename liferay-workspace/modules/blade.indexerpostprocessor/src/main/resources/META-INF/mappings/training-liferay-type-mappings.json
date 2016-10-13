@@ -1,10 +1,12 @@
 {
 	"LiferayDocumentType": {
+		"properties": {
 			"lastLoginDate": {
 				"format": "yyyyMMddHHmmss",
 				"index": "not_analyzed",
 				"store": "yes",
 				"type": "date"
 			}
+		}
 	}
 }
