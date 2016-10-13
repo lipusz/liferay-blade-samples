@@ -47,15 +47,20 @@ public class TrainingIndexSettingsContributor
 
 	@Override
 	public void contribute(TypeMappingsHelper typeMappingsHelper) {
-		long companyId = CompanyThreadLocal.getCompanyId();
+		String indexName = _LIFERAY_ES_INDEX_NAME_DEFAULT_PREFIX +
+			String.valueOf(CompanyThreadLocal.getCompanyId());
 
 		String trainingTypeMappings = getResourceAsString(
-			getClass(), _TRAINING_LIFERAY_TYPE_MAPPING_FILE_NAME);
+			getClass(), _TRAINING_LIFERAY_ES_TYPE_MAPPING_FILE_NAME);
 
-		_log.info("Contributing to type mapping for company " + companyId);
+		_log.info("Contributing to type mapping for index " + indexName);
 
-//		typeMappingsHelper.addTypeMappings(
-//			getIndexName(companyId), trainingTypeMappings);
+		try {
+			typeMappingsHelper.addTypeMappings(indexName, trainingTypeMappings);
+		}
+		catch (IllegalArgumentException illegalArgumentException) {
+			_log.error(illegalArgumentException);
+		}
 	}
 
 	/**
@@ -79,7 +84,10 @@ public class TrainingIndexSettingsContributor
 		}
 	}
 
-	private static final String _TRAINING_LIFERAY_TYPE_MAPPING_FILE_NAME =
+	private static final String _LIFERAY_ES_INDEX_NAME_DEFAULT_PREFIX =
+		"liferay-";
+
+	private static final String _TRAINING_LIFERAY_ES_TYPE_MAPPING_FILE_NAME =
 		"/META-INF/mappings/training-liferay-type-mappings.json";
 
 	private static final Log _log = LogFactoryUtil.getLog(
