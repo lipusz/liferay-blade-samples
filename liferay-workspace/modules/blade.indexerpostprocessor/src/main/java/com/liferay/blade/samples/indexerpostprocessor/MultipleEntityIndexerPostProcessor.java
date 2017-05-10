@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanQuery;
 import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerPostProcessor;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.Summary;
@@ -26,6 +27,7 @@ import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Liferay
@@ -109,6 +111,16 @@ public class MultipleEntityIndexerPostProcessor
 			_log.info("postProcessSummary");
 		}
 	}
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.portal.kernel.model.Contact)"
+	)
+	protected Indexer contactIndexer;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.portal.kernel.model.Organization)"
+	)
+	protected Indexer organizationIndexer;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MultipleEntityIndexerPostProcessor.class);
