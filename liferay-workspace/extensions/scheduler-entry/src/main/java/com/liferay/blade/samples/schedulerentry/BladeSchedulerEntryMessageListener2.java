@@ -41,19 +41,17 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"cron.expression=0 0/1 * * * ?" },
-	service = BladeSchedulerEntryMessageListener.class
+		"cron.expression=0 0/2 * * * ?" },
+	service = BladeSchedulerEntryMessageListener2.class
 )
-public class BladeSchedulerEntryMessageListener
+public class BladeSchedulerEntryMessageListener2
 	extends BaseSchedulerEntryMessageListener {
-
-	private static final String _DEFAULT_CRON_EXPRESSION = "0 0 0 * * ?";
 
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
 		String cronExpression = GetterUtil.getString(
-			properties.get("cron.expression"), _DEFAULT_CRON_EXPRESSION);
+			properties.get("cron.expression"));
 
 		schedulerEntryImpl.setTrigger(
 			TriggerFactoryUtil.createTrigger(
@@ -77,7 +75,7 @@ public class BladeSchedulerEntryMessageListener
 	}
 
 	private final Log _log = LogFactoryUtil.getLog(
-		BladeSchedulerEntryMessageListener.class);
+		BladeSchedulerEntryMessageListener2.class);
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
 	private volatile ModuleServiceLifecycle _moduleServiceLifecycle;
