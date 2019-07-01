@@ -19,6 +19,8 @@ package com.liferay.blade.samples.rest;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.Collections;
@@ -28,7 +30,9 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -60,6 +64,13 @@ public class UsersRestService extends Application {
 	@Path("/list")
 	@Produces("text/plain")
 	public String getUsers() {
+		PermissionChecker permissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		if (!permissionChecker.isCompanyAdmin()) {
+			throw new WebApplicationException(Response.Status.FORBIDDEN);
+		}
+
 		StringBuilder result = new StringBuilder();
 
 		for (User user : _userLocalService.getUsers(-1, -1)) {
