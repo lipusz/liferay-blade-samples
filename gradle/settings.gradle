@@ -4,6 +4,7 @@ include(
 	'apps:configuration-action',
 	'apps:control-panel-portlet',
 	'apps:ds-portlet',
+	'apps:elasticsearch-transport-client-examples',
 	'apps:filter-portlet',
 	'apps:freemarker-portlet',
 	'apps:greedy-policy-option-portlet:higher-ranked-service',
